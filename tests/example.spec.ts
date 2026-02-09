@@ -1,14 +1,19 @@
 import { BaseTest as test } from "../src/basetest";
 
 test.describe("OrangeHRM Login (POM + BaseTest)", () => {
-  test.beforeEach("Login with Admin credentials", async ({ loginPage }) => {
+  /*test.beforeEach("Login with Admin credentials", async ({ loginPage }) => {
     await loginPage.navigate();
     await loginPage.enterUserName("Admin");
     await loginPage.enterPassword("admin123");
     await loginPage.clickLogin();
     await loginPage.verifyLogin();
-  });
-  test("add employee", async ({ dashboardPage, viewEmployee,addEmployee }) => {
+  });*/
+  test("add employee", async ({ loginPage, dashboardPage, viewEmployee,addEmployee }) => {
+    await loginPage.navigate();
+    await loginPage.enterUserName("Admin");
+    await loginPage.enterPassword("admin123");
+    await loginPage.clickLogin();
+    await loginPage.verifyLogin();
     await dashboardPage.clickPIM();
     await viewEmployee.clickAdd();
     await addEmployee.enterFirstName("sahtexample");
