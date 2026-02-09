@@ -12,7 +12,7 @@ export class EditPage {
     this.#personalDetailsTitle = this.page.getByRole("heading", {name: "Personal Details",});
     this.#firstNameInput = this.page.locator("input.orangehrm-firstname");
     this.#personalDetailsForm = this.page.locator(".orangehrm-edit-employee-content form").first();
-    this.#saveButton = this.#personalDetailsForm.getByRole("button", {name: "Save",});
+    this.#saveButton = this.#personalDetailsForm.getByRole("button", { name: /Save/i });
   }
 
   async verifyEditPageOpened() {
