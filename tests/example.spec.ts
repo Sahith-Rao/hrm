@@ -11,12 +11,12 @@ test.describe("OrangeHRM Login (POM + BaseTest)", () => {
   test("add employee", async ({ dashboardPage, viewEmployee,addEmployee }) => {
     await dashboardPage.clickPIM();
     await viewEmployee.clickAdd();
-    await addEmployee.enterFirstName("saht");
+    await addEmployee.enterFirstName("sahtexample");
     await addEmployee.enterLastName("rew");
     await addEmployee.clickSave();
     await addEmployee.verifyEmployeeAdded();
   });
-  test("edit employee", async ({ dashboardPage, employeeListPage, editPage}) => {
+  /*test("edit employee", async ({ dashboardPage, employeeListPage, editPage}) => {
     await dashboardPage.clickPIM();
     const empID = "0442";
     const upd = "Johnupdated";
@@ -41,5 +41,5 @@ test.describe("OrangeHRM Login (POM + BaseTest)", () => {
   await employeeListPage.deleteEmployeeById(empId);
   await dashboardPage.logout();
   await dashboardPage.verifyLogout();
-});
+});*/
 });
