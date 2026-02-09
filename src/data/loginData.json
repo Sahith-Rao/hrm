@@ -1,0 +1,44 @@
+[
+    {
+      "title": "valid login",
+      "username": "Admin",
+      "password": "admin123",
+      "expected": "success"
+    },
+    {
+      "title": "invalid username",
+      "username": "InvalidUser",
+      "password": "admin123",
+      "expected": "invalid"
+    },
+    {
+      "title": "invalid password",
+      "username": "Admin",
+      "password": "wrongpassword",
+      "expected": "invalid"
+    },
+    {
+      "title": "invalid username and password",
+      "username": "InvalidUser",
+      "password": "wrongpassword",
+      "expected": "invalid"
+    },
+    {
+      "title": "empty username",
+      "username": "",
+      "password": "admin123",
+      "expected": "usernameRequired"
+    },
+    {
+      "title": "empty password",
+      "username": "Admin",
+      "password": "",
+      "expected": "passwordRequired"
+    },
+    {
+      "title": "both empty",
+      "username": "",
+      "password": "",
+      "expected": "bothRequired"
+    }
+  ]
