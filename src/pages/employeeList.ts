@@ -13,27 +13,43 @@ export class EmployeeListPage {
     this.#tableBody = this.page.locator(".oxd-table-body");
   }
 
+  #rowByEmployeeId(empId: string) {
+    return this.#tableBody.locator(".oxd-table-row, .oxd-table-card").filter({ hasText: empId });
+  }
+
   async searchByEmployeeId(empId: string) {
     await expect(this.#employeeIdInput).toBeVisible({ timeout: 15000 });
     await this.#employeeIdInput.fill(empId);
     console.log(`Entered Employee ID: ${empId}`);
     await this.#searchButton.click();
     console.log("Clicked Search button");
-    await expect(this.#tableBody).toBeVisible({ timeout: 15000 });
-    console.log("Search results table loaded");
+    const spinner = this.page.locator(".oxd-loading-spinner");
+    if (await spinner.isVisible().catch(() => false)) {
+      await expect(spinner).toBeHidden({ timeout: 15000 });
+    }
+    await this.page.waitForLoadState("networkidle");
+    const noRecords = this.page.getByText("No Records Found");
+    await Promise.race([
+      this.#tableBody.waitFor({ state: "visible", timeout: 15000 }),
+      noRecords.waitFor({ state: "visible", timeout: 15000 }),
+    ]);
+    if (await this.#tableBody.isVisible().catch(() => false)) {
+      console.log("Search results table loaded");
+    } else {
+      console.log("Search returned no results (table empty or hidden)");
+    }
   }
 
   async verifyEmployeePresent(empId: string) {
-    const row = this.#tableBody.locator(".oxd-table-row", { hasText: empId });
+    const row = this.#rowByEmployeeId(empId);
     await expect(row.first()).toBeVisible({ timeout: 15000 });
     console.log(`Employee found with ID: ${empId}`);
   }
 
   async clickEditByEmployeeId(empId: string) {
-    const row = this.#tableBody.locator(".oxd-table-row", { hasText: empId });
+    const row = this.#rowByEmployeeId(empId);
     await expect(row.first()).toBeVisible({ timeout: 15000 });
     console.log(`Opening employee edit page for ID: ${empId}`);
-    // Use more robust selector - find edit icon and click its parent button
     const editIcon = row.first().locator("i.bi-pencil-fill");
     await expect(editIcon).toBeVisible({ timeout: 15000 });
     await editIcon.click();
@@ -41,17 +57,16 @@ export class EmployeeListPage {
   }
 
   async verifyFirstNameInTable(empId: string, expectedFirstName: string) {
-    const row = this.#tableBody.locator(".oxd-table-row", { hasText: empId });
+    const row = this.#rowByEmployeeId(empId);
     await expect(row.first()).toBeVisible({ timeout: 15000 });
     await expect(row.first()).toContainText(expectedFirstName, { timeout: 15000 });
     console.log(`Verified in table: Employee ID ${empId} has first name ${expectedFirstName}`);
   }
 
   async deleteEmployeeById(empId: string) {
-    const row = this.#tableBody.locator(".oxd-table-row", { hasText: empId });
+    const row = this.#rowByEmployeeId(empId);
     await expect(row.first()).toBeVisible({ timeout: 15000 });
     console.log(`Deleting employee with ID: ${empId}`);
-    // Use more robust selector - find delete icon and click its parent button
     const deleteIcon = row.first().locator("i.bi-trash");
     await expect(deleteIcon).toBeVisible({ timeout: 15000 });
     await deleteIcon.click();
@@ -60,13 +75,13 @@ export class EmployeeListPage {
     await expect(confirmDeleteBtn).toBeVisible({ timeout: 15000 });
     await confirmDeleteBtn.click();
     console.log("Confirmed delete");
-    await expect(row.first()).toHaveCount(0, { timeout: 15000 });
+    await expect(row).toHaveCount(0, { timeout: 15000 });
     console.log(`Employee deleted successfully: ${empId}`);
   }
 
   async verifyEmployeeDeleted(empId: string) {
-    const row = this.#tableBody.locator(".oxd-table-row", { hasText: empId });
-    await expect(row.first()).not.toBeVisible({ timeout: 5000 });
+    const row = this.#rowByEmployeeId(empId);
+    await expect(row).toHaveCount(0, { timeout: 15000 });
     console.log(`Verified employee with ID ${empId} is deleted`);
   }
 
@@ -75,7 +90,7 @@ export class EmployeeListPage {
       console.log("Employee presence check requested with empty ID; returning false.");
       return false;
     }
-    const row = this.#tableBody.locator(".oxd-table-row", { hasText: empId });
+    const row = this.#rowByEmployeeId(empId);
     const count = await row.count();
     const present = count > 0;
     console.log(`Employee presence check for ID ${empId}: ${present}`);
@@ -87,7 +102,7 @@ export class EmployeeListPage {
       console.log("Cannot log employee details for empty ID.");
       return;
     }
-    const row = this.#tableBody.locator(".oxd-table-row", { hasText: empId }).first();
+    const row = this.#rowByEmployeeId(empId).first();
     if (await row.isVisible()) {
       const details = (await row.textContent()) ?? "";
       console.log(`Employee details for ID ${empId}: ${details.trim()}`);
