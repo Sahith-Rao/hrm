@@ -1,24 +1,43 @@
-import { BaseTest as test } from "../src/basetest";
+import { type Locator, type Page, expect } from "@playwright/test";
 
-test.describe("Add Employee", () => {
-  test.beforeEach("Login with Admin credentials", async ({ loginPage }) => {
-    await loginPage.navigate();
-    await loginPage.enterUserName("Admin");
-    await loginPage.enterPassword("admin123");
-    await loginPage.clickLogin();
-    await loginPage.verifyLogin();
-  });
+export class AddEmployee {
+    page: Page;
+    #firstName: Locator;
+    #lastName: Locator;
+    #saveButton: Locator;
+    #employeeIdInput: Locator;
 
-  test("should add a new employee and capture employee ID", async ({ dashboardPage, viewEmployee, addEmployee }) => {
-    await dashboardPage.clickPIM();
-    await viewEmployee.clickAdd();
-    const firstName = "curscheckssag";
-    const lastName = "see";
-    await addEmployee.enterFirstName(firstName);
-    await addEmployee.enterLastName(lastName);
-    const employeeId = await addEmployee.getEmployeeId();
-    await addEmployee.clickSave();
-    await addEmployee.verifyEmployeeAdded();
-    console.log(`Created employee with ID: ${employeeId}`);
-  });
-});
+    constructor(page: Page) {
+        this.page = page;
+        this.#firstName = this.page.getByPlaceholder("First Name");
+        this.#lastName = this.page.getByPlaceholder("Last Name");
+        this.#saveButton = this.page.getByRole("button", { name: /Save/i });
+        this.#employeeIdInput = this.page.locator(".oxd-input-group", { hasText: "Employee Id" }).locator("input");
+    }
+    
+    async enterFirstName(firstName: string) {
+        await this.#firstName.fill(firstName);
+        console.log(`Entered first name: ${firstName}`);
+    }
+    
+    async enterLastName(lastName: string) {
+        await this.#lastName.fill(lastName);
+        console.log(`Entered last name: ${lastName}`);
+    }
+    
+    async clickSave() {
+        await this.#saveButton.click();
+        console.log("Clicked on Save");
+    }
+    
+    async verifyEmployeeAdded() {
+        await expect(this.page.getByRole('heading', { name: 'Personal Details' })).toBeVisible({ timeout: 15000 });
+        console.log('Employee added verified successfully');
+    }
+    
+    async getEmployeeId(): Promise<string> {
+        await expect(this.#employeeIdInput).toBeVisible({ timeout: 15000 });
+        const employeeId = await this.#employeeIdInput.inputValue();
+        return employeeId.trim();
+    }
+}
