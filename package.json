@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "testone": "npx playwright test tests/example.spec.ts"
+    "testone": "npx playwright test tests/addEmployee.spec.ts"
   },
   "keywords": [],
   "author": "",
