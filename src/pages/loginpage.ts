@@ -34,7 +34,8 @@ export class LoginPage {
   }
 
   async verifyLogin() {
-    await expect(this.page.locator(".oxd-userdropdown-tab")).toBeVisible({ timeout: 15000 });
+    await expect(this.page).toHaveURL(/\/web\/index\.php\/dashboard\//, { timeout: 15000 });
+    await expect(this.page.getByRole("link", { name: "PIM" })).toBeVisible({ timeout: 15000 });
     console.log("Login successful");
   }
 

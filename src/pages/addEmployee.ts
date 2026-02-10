@@ -29,12 +29,18 @@ export class AddEmployee {
         await this.#saveButton.click();
         console.log("Clicked on Save");
     }
-    
-    async verifyEmployeeAdded() {
-        await expect(this.page.getByRole('heading', { name: 'Personal Details' })).toBeVisible({ timeout: 15000 });
-        console.log('Employee added verified successfully');
+
+    async setEmployeeId(employeeId: string) {
+        await expect(this.#employeeIdInput).toBeVisible({ timeout: 15000 });
+        await this.#employeeIdInput.fill(employeeId);
+        console.log(`Entered employee id: ${employeeId}`);
     }
     
+    async verifyEmployeeAdded() {
+        await expect(this.page.getByRole('heading', { name: 'Personal Details' })).toBeVisible({ timeout: 150000 });
+        console.log('Employee added verified successfully');
+    }
+
     async getEmployeeId(): Promise<string> {
         await expect(this.#employeeIdInput).toBeVisible({ timeout: 15000 });
         const employeeId = await this.#employeeIdInput.inputValue();

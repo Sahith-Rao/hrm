@@ -16,7 +16,8 @@ test.describe("Add Employee", () => {
     const lastName = "see";
     await addEmployee.enterFirstName(firstName);
     await addEmployee.enterLastName(lastName);
-    const employeeId = await addEmployee.getEmployeeId();
+      const employeeId = `9${Date.now().toString().slice(-9)}`;
+    await addEmployee.setEmployeeId(employeeId);
     await addEmployee.clickSave();
     await addEmployee.verifyEmployeeAdded();
     console.log(`Created employee with ID: ${employeeId}`);
