@@ -34,7 +34,7 @@ export class LoginPage {
   }
 
   async verifyLogin() {
-    await expect(this.page.getByRole("heading", { name: "Dashboard" })).toBeVisible({ timeout: 15000 });
+    await expect(this.page.locator(".oxd-userdropdown-tab")).toBeVisible({ timeout: 15000 });
     console.log("Login successful");
   }
 
