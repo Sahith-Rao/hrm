@@ -57,7 +57,7 @@ export class LoginPage {
     await expect(errorMsg).toBeVisible({ timeout: 10000 });
     await expect(errorMsg).toHaveText("Required");
     console.log("Password required error displayed");
-}
+  }
 
   async verifyBothFieldsRequiredError() {
     const usernameError = this.page.locator('input[name="username"]').locator("//ancestor::div[contains(@class,'oxd-input-group')]").locator(".oxd-input-field-error-message");

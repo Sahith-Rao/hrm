@@ -9,19 +9,11 @@ test.describe("Check Employee Presence", () => {
     await loginPage.verifyLogin();
   });
 
-  test("should check if a given employee is present and log details", async ({
-    loginPage,
-    dashboardPage,
-    viewEmployee,
-    addEmployee,
-    employeeListPage,
-  }) => {
+  test("should check if a given employee is present and log details", async ({loginPage,dashboardPage,viewEmployee,addEmployee,employeeListPage,}) => {
     await dashboardPage.clickPIM();
     await viewEmployee.clickAdd();
-
     const firstName = "finSearchTestag";
     const lastName = "Sample";
-
     await addEmployee.enterFirstName(firstName);
     await addEmployee.enterLastName(lastName);
 
