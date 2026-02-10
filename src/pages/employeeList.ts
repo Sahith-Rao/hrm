@@ -28,7 +28,7 @@ export class EmployeeListPage {
       await expect(spinner).toBeHidden({ timeout: 15000 });
     }
     await this.page.waitForLoadState("networkidle");
-    const noRecords = this.page.getByText("No Records Found");
+    const noRecords = this.page.getByText("No Records Found", { exact: true }).first();
     await Promise.race([
       this.#tableBody.waitFor({ state: "visible", timeout: 15000 }),
       noRecords.waitFor({ state: "visible", timeout: 15000 }),

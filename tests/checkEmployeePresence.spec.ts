@@ -25,7 +25,8 @@ test.describe("Check Employee Presence", () => {
     await addEmployee.enterFirstName(firstName);
     await addEmployee.enterLastName(lastName);
 
-    const empId = await addEmployee.getEmployeeId();
+    const empId = `9${Date.now().toString().slice(-9)}`;
+    await addEmployee.setEmployeeId(empId);
     console.log(`Captured employee ID for presence check before save: ${empId}`);
 
     await addEmployee.clickSave();

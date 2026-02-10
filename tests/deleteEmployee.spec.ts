@@ -17,7 +17,8 @@ test.describe("Delete Employee", () => {
     await addEmployee.enterFirstName(firstName);
     await addEmployee.enterLastName(lastName);
 
-    createdEmployeeId = await addEmployee.getEmployeeId();
+    createdEmployeeId = `9${Date.now().toString().slice(-9)}`;
+    await addEmployee.setEmployeeId(createdEmployeeId);
     console.log(`Created employee with ID: ${createdEmployeeId} for deletion`);
 
     await addEmployee.clickSave();
@@ -38,6 +39,15 @@ test.describe("Delete Employee", () => {
     await employeeListPage.verifyEmployeePresent(createdEmployeeId);
     await employeeListPage.deleteEmployeeById(createdEmployeeId);
 
+    await dashboardPage.logout();
+    await dashboardPage.verifyLogout();
+
+    await loginPage.enterUserName("Admin");
+    await loginPage.enterPassword("admin123");
+    await loginPage.clickLogin();
+    await loginPage.verifyLogin();
+
+    await dashboardPage.clickPIM();
     await employeeListPage.searchByEmployeeId(createdEmployeeId);
     await employeeListPage.verifyEmployeeDeleted(createdEmployeeId);
   });

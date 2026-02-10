@@ -19,7 +19,8 @@ test.describe("Edit Employee", () => {
     await addEmployee.enterFirstName(firstName);
     await addEmployee.enterLastName(lastName);
 
-    createdEmployeeId = await addEmployee.getEmployeeId();
+    createdEmployeeId = `9${Date.now().toString().slice(-9)}`;
+    await addEmployee.setEmployeeId(createdEmployeeId);
     console.log(`Created employee with ID: ${createdEmployeeId} for editing`);
 
     await addEmployee.clickSave();
@@ -46,6 +47,14 @@ test.describe("Edit Employee", () => {
     await editPage.updateFirstName(updatedFirstName);
     await editPage.clickSave();
     await editPage.verifyFirstNameUpdated(updatedFirstName);
+
+    await dashboardPage.logout();
+    await dashboardPage.verifyLogout();
+
+    await loginPage.enterUserName("Admin");
+    await loginPage.enterPassword("admin123");
+    await loginPage.clickLogin();
+    await loginPage.verifyLogin();
 
     await dashboardPage.clickPIM();
     await employeeListPage.searchByEmployeeId(createdEmployeeId);
