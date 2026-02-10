@@ -11,18 +11,28 @@ test.describe("Delete Employee", () => {
     await loginPage.verifyLogin();
     await dashboardPage.clickPIM();
     await viewEmployee.clickAdd();
-    
-    const firstName = "sampleDelete";
+
+    const firstName = "looksampleDelete";
     const lastName = "sampleDel";
     await addEmployee.enterFirstName(firstName);
     await addEmployee.enterLastName(lastName);
-    await addEmployee.clickSave();
-    await addEmployee.verifyEmployeeAdded();
+
     createdEmployeeId = await addEmployee.getEmployeeId();
     console.log(`Created employee with ID: ${createdEmployeeId} for deletion`);
+
+    await addEmployee.clickSave();
+    await addEmployee.verifyEmployeeAdded();
+
+    await dashboardPage.logout();
+    await dashboardPage.verifyLogout();
   });
 
-  test("should delete employee", async ({ dashboardPage, employeeListPage }) => {
+  test("should delete employee", async ({ loginPage, dashboardPage, employeeListPage }) => {
+    await loginPage.enterUserName("Admin");
+    await loginPage.enterPassword("admin123");
+    await loginPage.clickLogin();
+    await loginPage.verifyLogin();
+
     await dashboardPage.clickPIM();
     await employeeListPage.searchByEmployeeId(createdEmployeeId);
     await employeeListPage.verifyEmployeePresent(createdEmployeeId);
