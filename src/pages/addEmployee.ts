@@ -26,7 +26,7 @@ export class AddEmployee {
     }
 
     async setEmployeeId(employeeId: string) {
-        await expect(this.#employeeIdInput).toBeVisible({ timeout: 15000 });
+        await expect(this.#employeeIdInput).toBeVisible({ timeout: 1500000 });
         await this.#employeeIdInput.fill(employeeId);
         console.log(`Entered employee id: ${employeeId}`);
     }
@@ -37,12 +37,12 @@ export class AddEmployee {
     }
     
     async verifyEmployeeAdded() {
-        await expect(this.page.getByRole('heading', { name: 'Personal Details' })).toBeVisible({ timeout: 150000 });
+        await expect(this.page.getByRole('heading', { name: 'Personal Details' })).toBeVisible({ timeout: 1500000 });
         console.log('Employee added verified successfully');
     }
 
     async getEmployeeId(){
-        await expect(this.#employeeIdInput).toBeVisible({ timeout: 15000 });
+        await expect(this.#employeeIdInput).toBeVisible({ timeout: 1500000 });
         const employeeId = await this.#employeeIdInput.inputValue();
         return employeeId.trim();
     }

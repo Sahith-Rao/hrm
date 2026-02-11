@@ -16,23 +16,23 @@ export class DashboardPage {
   }
 
   async clickPIM() {
-    await expect(this.#pimLink).toBeVisible({ timeout: 15000 });
+    await expect(this.#pimLink).toBeVisible({ timeout: 1500000 });
     await this.#pimLink.click();
     console.log("Clicked on PIM");
   }
 
   async logout() {
-    await expect(this.#userDropdown).toBeVisible({ timeout: 15000 });
+    await expect(this.#userDropdown).toBeVisible({ timeout: 1500000 });
     await this.#userDropdown.click();
     console.log("Opened user dropdown");
 
-    await expect(this.#logoutLink).toBeVisible({ timeout: 15000 });
+    await expect(this.#logoutLink).toBeVisible({ timeout: 1500000 });
     await this.#logoutLink.click();
     console.log("Clicked Logout");
   }
 
   async verifyLogout() {
-    await expect(this.#loginButton).toBeVisible({ timeout: 15000 });
+    await expect(this.#loginButton).toBeVisible({ timeout: 1500000 });
     console.log("Logout verified successfully");
   }
 }

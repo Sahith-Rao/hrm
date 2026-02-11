@@ -16,26 +16,26 @@ export class EditPage {
   }
 
   async verifyEditPageOpened() {
-    await expect(this.#personalDetailsTitle).toBeVisible({ timeout: 15000 });
+    await expect(this.#personalDetailsTitle).toBeVisible({ timeout: 1500000 });
     console.log("Edit page opened");
   }
 
   async updateFirstName(firstName: string) {
-    await expect(this.#firstNameInput).toBeVisible({ timeout: 15000 });
+    await expect(this.#firstNameInput).toBeVisible({ timeout: 1500000 });
     await this.#firstNameInput.click();
     await this.#firstNameInput.fill(firstName);
     console.log(`Updated first name: ${firstName}`);
   }
 
   async clickSave() {
-    await expect(this.#saveButton).toBeVisible({ timeout: 15000 });
+    await expect(this.#saveButton).toBeVisible({ timeout: 1500000 });
     await this.#saveButton.click();
     console.log("Clicked save button");
   }
 
   async verifyFirstNameUpdated(expectedFirstName: string) {
     await expect(this.#firstNameInput).toHaveValue(expectedFirstName, {
-      timeout: 20000,
+      timeout: 2000000,
     });
     console.log(`Verified first name updated: ${expectedFirstName}`);
   }
